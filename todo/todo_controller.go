@@ -3,9 +3,9 @@ package todo
 import (
 	"encoding/json"
 
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 
-	"github.com/netbrain/todoapp-go-es/common"
+	"github.com/ScottAI/go-sample-es-cqrs/common"
 )
 
 const (

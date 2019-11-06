@@ -7,8 +7,8 @@ import (
 	"log"
 	"sync/atomic"
 
-	"github.com/netbrain/todoapp-go-es/common"
-	"github.com/netbrain/todoapp-go-es/event"
+	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/event"
 
 	"golang.org/x/net/websocket"
 )

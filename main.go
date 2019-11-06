@@ -12,12 +12,12 @@ import (
 
 	"golang.org/x/net/websocket"
 
-	"github.com/netbrain/todoapp-go-es/ws"
+	"github.com/ScottAI/go-sample-es-cqrs/ws"
 
-	"github.com/netbrain/todoapp-go-es/common"
-	"github.com/netbrain/todoapp-go-es/event"
-	"github.com/netbrain/todoapp-go-es/fsstore"
-	"github.com/netbrain/todoapp-go-es/todo"
+	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/event"
+	"github.com/ScottAI/go-sample-es-cqrs/fsstore"
+	"github.com/ScottAI/go-sample-es-cqrs/todo"
 )
 
 var eventBus event.Bus
@@ -30,10 +30,12 @@ var staticPath string
 
 func init() {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+
 	if err != nil {
 		log.Fatal(err)
 	}
 	staticPath = filepath.Join(dir, "static")
+	log.Println("staticPath:",staticPath)
 	fsstore.DataDir = filepath.Join(staticPath, "api")
 	eventBus = event.NewDefaultBus()
 	eventLogFile = filepath.Join(os.TempDir(), "eventlog")
@@ -91,8 +93,8 @@ func main() {
 		log.Printf("Listening on interface: %s", addr.String())
 	}
 
-	log.Println("Listening on port 8080")
-	err := http.ListenAndServe(":8080", nil)
+	log.Println("Listening on port 8787")
+	err := http.ListenAndServe(":8787", nil)
 	if err != nil {
 		panic("ListenAndServe: " + err.Error())
 	}

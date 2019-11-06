@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/netbrain/todoapp-go-es/common"
+	"github.com/ScottAI/go-sample-es-cqrs/common"
 
 	"testing"
 )

@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/netbrain/todoapp-go-es/common"
+	"github.com/ScottAI/go-sample-es-cqrs/common"
 )
 
 //Bus interface

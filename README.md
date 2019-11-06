@@ -1,30 +1,30 @@
-# todoapp-go-es
+# 简介
 
-This is a sample applicaton of golang and CQRS + ES in a simple todo app. 
+这是一个使用Go语言实现的ES-CQRS的案例，通过完成一个代办事项（todo）项目进行模拟
 
-## Running with docker
-
-```
-docker build -t todoapp-go-es .
-docker run -it --rm --name todoapp todoapp-go-es
-```
-
-## Running without docker
-
-To start the sample application, download and install the golang development environment. Then proceed with the following:
+## 使用docker运行
 
 ```
-go get github.com/netbrain/todoapp-go-es
+docker build -t go-sample-es-cqrs .
+docker run -it --rm --name todoapp go-sample-es-cqrs
+```
 
-cd $GOPATH/github.com/netbrain/todoapp-go-es
+## 不使用docker运行
+
+不使用docker运行,  按照下面的步骤：
+
+```
+go get https://github.com/ScottAI/go-sample-es-cqrs
+
+cd $GOPATH/github.com/ScottAI/go-sample-es-cqrs
 
 go build
 
-./todoapp-go-es
+./go-sample-es-cqrs
 ```
-and then if your environment has been correctly set up, you can now invoke the app with: 
+: 
 
-The application will then be listening @ http://localhost:8080
+T然后运行并访问 @ http://localhost:8787
 
 
 

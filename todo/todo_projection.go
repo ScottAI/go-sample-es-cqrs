@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/netbrain/todoapp-go-es/common"
-	"github.com/netbrain/todoapp-go-es/event"
-	"github.com/netbrain/todoapp-go-es/fsstore"
+	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/event"
+	"github.com/ScottAI/go-sample-es-cqrs/fsstore"
 )
 
 //Projection the todo projection which creates todo views
