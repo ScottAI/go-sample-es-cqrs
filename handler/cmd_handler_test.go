@@ -1,9 +1,8 @@
-package main
+package handler
 
 import (
 	"fmt"
-
-	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 
 	"testing"
 )

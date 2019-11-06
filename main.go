@@ -2,63 +2,37 @@ package main
 
 import (
 	"encoding/json"
-	"io"
+	"github.com/ScottAI/go-sample-es-cqrs/handler"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
-	"os"
+
 	"path/filepath"
 
 	"golang.org/x/net/websocket"
 
 	"github.com/ScottAI/go-sample-es-cqrs/ws"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
-	"github.com/ScottAI/go-sample-es-cqrs/event"
-	"github.com/ScottAI/go-sample-es-cqrs/fsstore"
+	"github.com/ScottAI/go-sample-es-cqrs/initial"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 	"github.com/ScottAI/go-sample-es-cqrs/todo"
 )
 
-var eventBus event.Bus
-var eventLogFile string
-var eventLogWriter io.Writer
-var eventLogReader io.Reader
-var eventRepository event.Repository
-var todoProjection *todo.Projection
-var staticPath string
 
-func init() {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	staticPath = filepath.Join(dir, "static")
-	log.Println("staticPath:",staticPath)
-	fsstore.DataDir = filepath.Join(staticPath, "api")
-	eventBus = event.NewDefaultBus()
-	eventLogFile = filepath.Join(os.TempDir(), "eventlog")
-	todoProjection = todo.NewProjection(eventBus)
-	eventLogWriter, _ = os.OpenFile(eventLogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
-	eventLogReader, _ = os.Open(eventLogFile)
-	eventRepository = event.NewDefaultRepository(eventLogReader, eventLogWriter, eventBus)
-
-	log.SetFlags(log.Flags() | log.Lshortfile)
-}
 
 func main() {
-	cmdHandler := NewDefaultCommandHandler()
+	cmdHandler := handler.NewDefaultCommandHandler()
 	cmdHandler.RegisterCommand("createTodoItem", todo.CreateTodoItem)
 	cmdHandler.RegisterCommand("removeTodoItem", todo.RemoveTodoItem)
 	cmdHandler.RegisterCommand("updateTodoItem", todo.UpdateTodoItem)
 	go cmdHandler.Start()
-	go eventBus.Start()
+	go initial.EventBus.Start()
 
-	//Read the event log
+	//读取事件日志 event log
 	go func() {
 		log.Println("Reading the event log...")
-		err := eventRepository.Read()
+		err := initial.EventHandler.Read()
 		if err != nil {
 			panic(err)
 		}
@@ -84,8 +58,8 @@ func main() {
 			w.WriteHeader(http.StatusBadRequest)
 		}
 	})
-	http.Handle("/api/", http.FileServer(http.Dir(staticPath)))
-	http.Handle("/", http.FileServer(http.Dir(filepath.Join(staticPath, "app"))))
+	http.Handle("/api/", http.FileServer(http.Dir(initial.StaticPath)))
+	http.Handle("/", http.FileServer(http.Dir(filepath.Join(initial.StaticPath, "app"))))
 	http.Handle("/ws/", websocket.Handler(wsHandler))
 
 	addrs, _ := net.InterfaceAddrs()
@@ -103,6 +77,6 @@ func main() {
 
 func wsHandler(conn *websocket.Conn) {
 	log.Println("New WS client")
-	ws := ws.NewClient(conn, eventBus)
+	ws := ws.NewClient(conn, initial.EventBus)
 	ws.Listen()
 }

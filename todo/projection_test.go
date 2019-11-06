@@ -6,8 +6,8 @@ import (
 
 	"github.com/pborman/uuid"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
-	"github.com/ScottAI/go-sample-es-cqrs/event"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/event"
 )
 
 func TestCreateTodo(t *testing.T) {

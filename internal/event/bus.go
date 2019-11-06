@@ -4,23 +4,23 @@ import (
 	"log"
 	"time"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 )
 
-//Bus interface
+//Bus interface/事件总线接口
 type Bus interface {
 	Notify(*common.EventMessage)
 	Subscribe(string, ...string) *Subscription
 	Start()
 }
 
-//DefaultBus implementation
+//DefaultBus implementation/事件总线的一个实现
 type DefaultBus struct {
 	subscriptions []*Subscription
 	notifyChan    chan *common.EventMessage
 }
 
-// NewDefaultBus creates a new default event bus
+// NewDefaultBus 创建一个默认事件总线
 func NewDefaultBus() *DefaultBus {
 	return &DefaultBus{
 		subscriptions: make([]*Subscription, 0),
@@ -29,7 +29,7 @@ func NewDefaultBus() *DefaultBus {
 
 }
 
-//Subscribe listeners to the event bus
+//监听器订阅事件总线
 func (d *DefaultBus) Subscribe(name string, eventType ...string) *Subscription {
 	eventTypeMap := make(map[string]bool)
 	for _, v := range eventType {
@@ -45,12 +45,12 @@ func (d *DefaultBus) Subscribe(name string, eventType ...string) *Subscription {
 	return subscription
 }
 
-//Notify listeners of a new event
+//向监听器发布事件信息
 func (d *DefaultBus) Notify(event *common.EventMessage) {
 	d.notifyChan <- event
 }
 
-//Start should be run in it's own go routine, this starts the eventbus for relaying events to listeners
+//Start应该在一个goroutine中运行, 该方法启动事件总线
 func (d *DefaultBus) Start() {
 	for {
 		select {

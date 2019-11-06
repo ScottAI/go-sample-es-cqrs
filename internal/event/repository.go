@@ -6,32 +6,32 @@ import (
 	"io"
 	"log"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 )
 
-//Repository interface handles the writes and reads of the event log
-type Repository interface {
+//负责处理事件日志，读事件日志，写事件日志
+type EventHandler interface {
 	Write(*common.EventMessage) error
 	Read() error
 }
 
-//DefaultRepository is the default implementation of a event repository
-type DefaultRepository struct {
+//DefaultEventHandler 是EventHandler的一个实现
+type DefaultEventHandler struct {
 	r        io.Reader
 	w        io.Writer
 	eventBus Bus
 }
 
 //NewDefaultRepository instantiates a new DefaultRepository
-func NewDefaultRepository(r io.Reader, w io.Writer, bus Bus) *DefaultRepository {
-	return &DefaultRepository{
+func NewDefaultRepository(r io.Reader, w io.Writer, bus Bus) *DefaultEventHandler {
+	return &DefaultEventHandler{
 		r:        r,
 		w:        w,
 		eventBus: bus,
 	}
 }
 
-func (d *DefaultRepository) Write(event *common.EventMessage) error {
+func (d *DefaultEventHandler) Write(event *common.EventMessage) error {
 	jsonEvent, err := json.Marshal(event)
 	if err != nil {
 		return err
@@ -46,7 +46,7 @@ func (d *DefaultRepository) Write(event *common.EventMessage) error {
 	return nil
 }
 
-func (d *DefaultRepository) Read() error {
+func (d *DefaultEventHandler) Read() error {
 	scanner := bufio.NewScanner(d.r)
 	for scanner.Scan() {
 		event := &common.EventMessage{}

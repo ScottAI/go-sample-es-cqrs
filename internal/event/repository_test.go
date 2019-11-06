@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 )
 
 func TestCanWriteAndReadEvent(t *testing.T) {

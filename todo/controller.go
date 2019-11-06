@@ -5,7 +5,7 @@ import (
 
 	"github.com/pborman/uuid"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 )
 
 const (

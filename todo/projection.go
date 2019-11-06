@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
-	"github.com/ScottAI/go-sample-es-cqrs/event"
-	"github.com/ScottAI/go-sample-es-cqrs/fsstore"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/event"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/fsstore"
 )
 
 //Projection the todo projection which creates todo views

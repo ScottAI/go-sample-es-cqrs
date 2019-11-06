@@ -1,6 +1,6 @@
 package event
 
-import "github.com/ScottAI/go-sample-es-cqrs/common"
+import "github.com/ScottAI/go-sample-es-cqrs/internal/common"
 
 // Subscription handles a single subscription to a set of events from the event bus
 type Subscription struct {

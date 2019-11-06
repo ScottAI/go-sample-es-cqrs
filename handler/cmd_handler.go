@@ -1,10 +1,11 @@
-package main
+package handler
 
 import (
 	"fmt"
 	"log"
 
-	"github.com/ScottAI/go-sample-es-cqrs/common"
+	"github.com/ScottAI/go-sample-es-cqrs/initial"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 )
 
 //CommandFunc is the handler of a given command message
@@ -53,7 +54,7 @@ func (d *DefaultCommandHandler) Start() {
 	for {
 		select {
 		case event := <-d.eventChan:
-			eventRepository.Write(event)
+			initial.EventHandler.Write(event)
 		}
 	}
 }

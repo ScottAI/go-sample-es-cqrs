@@ -4,18 +4,18 @@ import (
 	"encoding/json"
 )
 
-//CommandMessage is a WS command message
+//CommandMessage websocket的命令信息
 type CommandMessage struct {
 	Name string           `json:"name"`
 	Data *json.RawMessage `json:"data"`
 }
 
-//ErrorMessage is a generic WS error message
+//ErrorMessage 是在websocket通信的错误信息
 type ErrorMessage struct {
 	Reason string `json:"reason"`
 }
 
-//EventMessage is a WS event message
+//EventMessage 是websocket的事件信息
 type EventMessage struct {
 	Name    string           `json:"name"`
 	Data    *json.RawMessage `json:"data"`
