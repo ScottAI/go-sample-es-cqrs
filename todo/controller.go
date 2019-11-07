@@ -14,7 +14,7 @@ const (
 	eventTodoItemUpdated = "todoItemUpdated"
 )
 
-//CreateTodoItem creates a todo based on a command message
+//CreateTodoItem 根据命令信息创建待办事项
 func CreateTodoItem(cmd *common.CommandMessage, eventChan chan<- *common.EventMessage) error {
 	var todo Todo
 	if err := json.Unmarshal(*cmd.Data, &todo); err != nil {
@@ -37,7 +37,7 @@ func CreateTodoItem(cmd *common.CommandMessage, eventChan chan<- *common.EventMe
 	return nil
 }
 
-//RemoveTodoItem removes a todo based on a command message
+//RemoveTodoItem 根据命令信息删除待办事项
 func RemoveTodoItem(cmd *common.CommandMessage, eventChan chan<- *common.EventMessage) error {
 	event := &common.EventMessage{
 		Name: eventTodoItemRemoved,
@@ -47,7 +47,7 @@ func RemoveTodoItem(cmd *common.CommandMessage, eventChan chan<- *common.EventMe
 	return nil
 }
 
-//UpdateTodoItem updates a todo based on a command message
+//UpdateTodoItem 根据命令信息更新代办事项
 func UpdateTodoItem(cmd *common.CommandMessage, eventChan chan<- *common.EventMessage) error {
 	event := &common.EventMessage{
 		Name: eventTodoItemUpdated,

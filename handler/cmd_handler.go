@@ -8,23 +8,23 @@ import (
 	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 )
 
-//CommandFunc is the handler of a given command message
+//CommandFunc 命令信息的处理函数定义
 type CommandFunc func(*common.CommandMessage, chan<- *common.EventMessage) error
 
-//CommandHandler is the interface which handles commands
+//CommandHandler 处理命令信息的接口
 type CommandHandler interface {
 	RegisterCommand(string, ...CommandFunc) error
 	HandleCommandMessage(*common.CommandMessage) error
 	Start()
 }
 
-//DefaultCommandHandler a default command handler implementation
+//DefaultCommandHandler 默认的信息处理结构体
 type DefaultCommandHandler struct {
 	commands  map[string][]CommandFunc
 	eventChan chan *common.EventMessage
 }
 
-//RegisterCommand binds a command with a handler function
+//RegisterCommand 把函数和命令绑定在一起
 func (d *DefaultCommandHandler) RegisterCommand(cmd string, handlers ...CommandFunc) error {
 	if _, exists := d.commands[cmd]; exists {
 		return fmt.Errorf("Command: %s already exists", cmd)
@@ -33,7 +33,7 @@ func (d *DefaultCommandHandler) RegisterCommand(cmd string, handlers ...CommandF
 	return nil
 }
 
-//HandleCommandMessage handles a common.CommandMessage and passes it along to the registered handler
+//HandleCommandMessage 处理 common.CommandMessage 并且将其传递给注册处理函数
 func (d *DefaultCommandHandler) HandleCommandMessage(message *common.CommandMessage) error {
 	log.Printf("Received command: %s", message.Name)
 	if handlers, exists := d.commands[message.Name]; exists {
@@ -49,7 +49,7 @@ func (d *DefaultCommandHandler) HandleCommandMessage(message *common.CommandMess
 	return fmt.Errorf("No such command %s", message.Name)
 }
 
-//Start starts listening to the eventChan
+//Start 启动简单evenChan
 func (d *DefaultCommandHandler) Start() {
 	for {
 		select {
@@ -59,7 +59,7 @@ func (d *DefaultCommandHandler) Start() {
 	}
 }
 
-//NewDefaultCommandHandler returns a new DefaultCommandHandler
+//NewDefaultCommandHandler 创建并返回 DefaultCommandHandler
 func NewDefaultCommandHandler() *DefaultCommandHandler {
 	return &DefaultCommandHandler{
 		commands:  make(map[string][]CommandFunc),

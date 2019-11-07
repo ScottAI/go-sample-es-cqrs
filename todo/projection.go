@@ -9,13 +9,13 @@ import (
 	"github.com/ScottAI/go-sample-es-cqrs/internal/jsstore"
 )
 
-//Projection the todo projection which creates todo views
+//Projection 投影
 type Projection struct {
 	subscription *event.Subscription
 	datastore    jsstore.JSStore
 }
 
-//NewProjection creates a new Projection
+//NewProjection 创建新的投影
 func NewProjection(bus event.Bus) *Projection {
 	datastore, err := jsstore.NewJSONFSStore("todo")
 	if err != nil {
@@ -36,7 +36,7 @@ func NewProjection(bus event.Bus) *Projection {
 	return p
 }
 
-//HandleEvent handles events this projection subscribes to
+//HandleEvent 通过投影处理事件
 func (p *Projection) HandleEvent(event *common.EventMessage) {
 	switch event.Name {
 	case eventTodoItemUpdated:
