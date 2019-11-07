@@ -1,4 +1,4 @@
-package fsstore
+package jsstore
 
 import (
 	"fmt"
@@ -7,19 +7,19 @@ import (
 	"runtime/debug"
 )
 
-//JSONFSStore a store that encodes data to json and gzips it
-type JSONFSStore struct {
+//JSONStore 存储json文件和gzip文件
+type JSONStore struct {
 	dataDir string
 	files   map[string]*jsonFile
 }
 
-//NewJSONFSStore creates a new JSONFSStore with a relative or absolute datadir path
-func NewJSONFSStore(dataDir string) (*JSONFSStore, error) {
+//NewJSONStore 创建一个新的 JSONStore，包含有一个绝对路径
+func NewJSONFSStore(dataDir string) (*JSONStore, error) {
 	if dataDir[0] != '/' {
 		dataDir = filepath.Join(DataDir, dataDir)
 	}
 
-	store := &JSONFSStore{
+	store := &JSONStore{
 		dataDir: dataDir,
 		files:   make(map[string]*jsonFile),
 	}
@@ -28,8 +28,8 @@ func NewJSONFSStore(dataDir string) (*JSONFSStore, error) {
 	return store, nil
 }
 
-//Set sets the data assosciated with a given id
-func (j *JSONFSStore) Set(id string, data interface{}) error {
+//Set 设置一个含有id的json
+func (j *JSONStore) Set(id string, data interface{}) error {
 	file, err := j.getJsonFile(id)
 	if err != nil {
 		return err
@@ -38,8 +38,8 @@ func (j *JSONFSStore) Set(id string, data interface{}) error {
 	return file.set(data)
 }
 
-//Remove removes the data associated with a given id
-func (j *JSONFSStore) Remove(id string) error {
+//Remove 根据指定id删除数据
+func (j *JSONStore) Remove(id string) error {
 	file, err := j.getJsonFile(id)
 	if err != nil {
 		return err
@@ -49,8 +49,8 @@ func (j *JSONFSStore) Remove(id string) error {
 	return nil
 }
 
-//Get injects the data assosciated with a given id
-func (j *JSONFSStore) Get(id string, v interface{}) error {
+//Get 判指定id的json是否可以解析
+func (j *JSONStore) Get(id string, v interface{}) error {
 	file, err := j.getJsonFile(id)
 	if err != nil {
 		return err
@@ -58,8 +58,8 @@ func (j *JSONFSStore) Get(id string, v interface{}) error {
 	return file.get(v)
 }
 
-//RemoveAll removes all files assosciated with this datastore
-func (j *JSONFSStore) RemoveAll() error {
+//RemoveAll 删除所有数据
+func (j *JSONStore) RemoveAll() error {
 	if err := os.RemoveAll(j.dataDir); err != nil {
 		return err
 	}
@@ -70,12 +70,12 @@ func (j *JSONFSStore) RemoveAll() error {
 	return nil
 }
 
-//GetDataDir returns the directory path for files stored with this datastore
-func (j *JSONFSStore) GetDataDir() string {
+//GetDataDir 返回json数据存储的路径
+func (j *JSONStore) GetDataDir() string {
 	return j.dataDir
 }
 
-func (j *JSONFSStore) AddToCollection(cPath string, id string, v interface{}) error {
+func (j *JSONStore) AddToCollection(cPath string, id string, v interface{}) error {
 	file, err := j.getJsonFile(cPath)
 	if err != nil {
 		return err
@@ -90,7 +90,7 @@ func (j *JSONFSStore) AddToCollection(cPath string, id string, v interface{}) er
 	return file.set(c)
 }
 
-func (j *JSONFSStore) RemoveFromCollection(cPath string, id string) error {
+func (j *JSONStore) RemoveFromCollection(cPath string, id string) error {
 	file, err := j.getJsonFile(cPath)
 	if err != nil {
 		return err
@@ -105,7 +105,7 @@ func (j *JSONFSStore) RemoveFromCollection(cPath string, id string) error {
 	return file.set(c)
 }
 
-func (j *JSONFSStore) GetCollection(cPath string) (map[string]interface{}, error) {
+func (j *JSONStore) GetCollection(cPath string) (map[string]interface{}, error) {
 	file, err := j.getJsonFile(cPath)
 
 	if err != nil {
@@ -114,7 +114,7 @@ func (j *JSONFSStore) GetCollection(cPath string) (map[string]interface{}, error
 	return j.getCollection(file)
 }
 
-func (j *JSONFSStore) getCollection(file *jsonFile) (map[string]interface{}, error) {
+func (j *JSONStore) getCollection(file *jsonFile) (map[string]interface{}, error) {
 	c := make(map[string]interface{})
 
 	if err := file.get(&c); err != nil {
@@ -123,7 +123,7 @@ func (j *JSONFSStore) getCollection(file *jsonFile) (map[string]interface{}, err
 	return c, nil
 }
 
-func (j *JSONFSStore) getJsonFile(path string) (*jsonFile, error) {
+func (j *JSONStore) getJsonFile(path string) (*jsonFile, error) {
 	if v, ok := j.files[path]; !ok {
 		file, err := os.OpenFile(
 			filepath.Join(j.dataDir, fmt.Sprintf("%s.json", path)),
@@ -148,13 +148,13 @@ func (j *JSONFSStore) getJsonFile(path string) (*jsonFile, error) {
 
 }
 
-func (j *JSONFSStore) Flush() {
+func (j *JSONStore) Flush() {
 	for _, f := range j.files {
 		f.flush()
 	}
 }
 
-func (j *JSONFSStore) Stop() {
+func (j *JSONStore) Stop() {
 	for _, f := range j.files {
 		f.stop()
 	}

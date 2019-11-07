@@ -1,9 +1,9 @@
-package fsstore
+package jsstore
 
 import "os"
 
-//FSStore ...
-type FSStore interface {
+//JSStore ...
+type JSStore interface {
 	Set(string, interface{}) error
 	Remove(string) error
 	Get(string, interface{}) error
@@ -14,5 +14,5 @@ type FSStore interface {
 	GetDataDir() string
 }
 
-//DataDir sets the root dir for data storage for this package
+//数据存储的根目录
 var DataDir = os.TempDir()

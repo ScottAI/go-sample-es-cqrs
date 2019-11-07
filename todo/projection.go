@@ -6,18 +6,18 @@ import (
 
 	"github.com/ScottAI/go-sample-es-cqrs/internal/common"
 	"github.com/ScottAI/go-sample-es-cqrs/internal/event"
-	"github.com/ScottAI/go-sample-es-cqrs/internal/fsstore"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/jsstore"
 )
 
 //Projection the todo projection which creates todo views
 type Projection struct {
 	subscription *event.Subscription
-	datastore    fsstore.FSStore
+	datastore    jsstore.JSStore
 }
 
 //NewProjection creates a new Projection
 func NewProjection(bus event.Bus) *Projection {
-	datastore, err := fsstore.NewJSONFSStore("todo")
+	datastore, err := jsstore.NewJSONFSStore("todo")
 	if err != nil {
 		panic(err)
 	}

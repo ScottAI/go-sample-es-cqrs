@@ -2,7 +2,7 @@ package event
 
 import "github.com/ScottAI/go-sample-es-cqrs/internal/common"
 
-// Subscription handles a single subscription to a set of events from the event bus
+// 订阅处理来自事件总线的多个事件中的一个事件
 type Subscription struct {
 	Name      string
 	EventChan chan *common.EventMessage
@@ -10,7 +10,7 @@ type Subscription struct {
 	destroyed bool
 }
 
-// ChangeSubscription changes the current subscription to a new set of events
+// 将当前订阅的事件更改为一个新事件
 func (s *Subscription) ChangeSubscription(eventTypes ...string) {
 	newMap := make(map[string]bool)
 	for _, eventType := range eventTypes {
@@ -19,7 +19,7 @@ func (s *Subscription) ChangeSubscription(eventTypes ...string) {
 	s.eventType = newMap
 }
 
-// Destroy marks this subscription for removal and closes it's event channel
+// 销毁该订阅以将其删除并且关闭事件频道
 func (s *Subscription) Destroy() {
 	if !s.destroyed {
 		s.destroyed = true

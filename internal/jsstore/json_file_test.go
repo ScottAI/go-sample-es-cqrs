@@ -1,4 +1,4 @@
-package fsstore
+package jsstore
 
 import (
 	"io/ioutil"

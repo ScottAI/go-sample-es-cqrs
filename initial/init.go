@@ -2,7 +2,7 @@ package initial
 
 import (
 	"github.com/ScottAI/go-sample-es-cqrs/internal/event"
-	"github.com/ScottAI/go-sample-es-cqrs/internal/fsstore"
+	"github.com/ScottAI/go-sample-es-cqrs/internal/jsstore"
 	"github.com/ScottAI/go-sample-es-cqrs/todo"
 	"io"
 	"log"
@@ -25,7 +25,7 @@ func init() {
 	}
 	StaticPath = filepath.Join(dir, "static")
 	log.Println("staticPath:",StaticPath)
-	fsstore.DataDir = filepath.Join(StaticPath, "api")
+	jsstore.DataDir = filepath.Join(StaticPath, "api")
 	EventBus = event.NewDefaultBus()
 	EventLogFile = filepath.Join(os.TempDir(), "eventlog")
 	TodoProjection = todo.NewProjection(EventBus)
